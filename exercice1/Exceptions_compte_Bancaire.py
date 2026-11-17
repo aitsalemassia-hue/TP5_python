@@ -1,0 +1,37 @@
+#exception pour solde insuffisant
+class SoldeInsuffisantException(Exception):
+     def __init__(self, message):
+          super().__init__(message)
+
+#exception pour les transactions bancaires
+class TransactionException(Exception):
+
+     def __init__(self, message):
+          super().__init__(message)
+
+#exception pour les montants négatifs
+class MontantNegatifException(TransactionException):
+    
+     def __init__(self, message="Le montant doit être strictement positif."):
+          super().__init__(message)
+
+#la classe de compte bancaire
+class CompteBancaire:
+     def __init__(self, nom, solde=0):
+          self.nom = nom
+          self.solde = solde
+
+     def deposer(self, montant):
+          if montant <= 0:
+               raise MontantNegatifException()
+          self.solde += montant
+
+     def retirer(self, montant):
+          if montant <= 0:
+               raise MontantNegatifException()
+          if montant > self.solde:
+               raise SoldeInsuffisantException("Solde insuffisant pour ce retrait.")
+          self.solde -= montant
+
+     def afficher(self):
+          print(f"Compte: {self.nom}, Solde: {self.solde}DH")
